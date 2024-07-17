@@ -148,7 +148,7 @@
           userId = checkLogin(profile.userId);
           console.log(userId);
           if (userId) {
-            sessionStorage.setItem("userId", userId);
+            sessionStorage.setItem('userData', JSON.stringify(userId));
           }else{
             console.log("ยังไม่ได้ลงทะเบียน");
           }
