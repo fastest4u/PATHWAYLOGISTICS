@@ -98,7 +98,7 @@
           const userId = await checkLogin(profile.userId);
           console.log(userId);
           if (userId) {
-            sessionStorage.setItem('userData', JSON.stringify(profileData));
+            sessionStorage.setItem('userData', JSON.stringify(userId));
           } else {
             console.log("ยังไม่ได้ลงทะเบียน");
             // Optionally, you can call registerUser(profileData) here if you want to register new users automatically.
