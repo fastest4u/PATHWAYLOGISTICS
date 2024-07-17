@@ -85,54 +85,26 @@
     </main>
 
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-    <script>
-        function logOut() {
-            liff.logout()
-            window.location.reload()
+<script>
+      function logOut() {
+        liff.logout()
+        window.location.reload()
+      }
+      function logIn() {
+        liff.login({ redirectUri: window.location.href })
+     
+      }
+      async function main() {
+        await liff.init({ liffId: "2005784883-MqXYJ2vW" })
+        if (liff.isLoggedIn()) {
+          const profile = await liff.getProfile()
+          console.log(profile)
+          
+        }else{
+          console.log("Not logged in")
         }
-        function logIn() {
-            liff.login({ redirectUri: window.location.href })
-
-        }
-        async function main() {
-            await liff.init({ liffId: "2005784883-MqXYJ2vW" })
-            if (liff.isLoggedIn()) {
-                const profile = await liff.getProfile()
-                data = {
-                    userId: profile.userId,
-                    pictureUrl: profile.pictureUrl,
-                }
-                register(data)
-
-            } else {
-                console.log("Not logged in")
-            }
-        }
-        main()
-
-        function register(data) {
-            fetch("https://sheet.best/api/sheets/b1628384-d498-4a3e-819f-fb58c139df2a/tabs/users", {
-                method: "POST",
-                mode: "cors",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-            })
-                .then((r) => r.json())
-                .then((data) => {
-                    // The response comes here
-                    console.log(data);
-                })
-                .catch((error) => {
-                    // Errors are reported there
-                    console.log(error);
-                });
-
-        }
-
-
-
+      }
+      main()
     </script>
 </body>
 
