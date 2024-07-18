@@ -2,15 +2,6 @@
 
 window.addEventListener("load", () => {
     
-    date = {
-        "userId": "U5a32123edbf86115566ac8f5714fb905",
-        "displayName": "🚛🛻ซีรี่ย์ทรานสปอร์ต🛻🚛",
-        "Fullname": "mai",
-        "rules": "user",
-        "department": "",
-        "pictureUrl": "https://profile.line-scdn.net/0hVsUiI7KwCVx4EBm8jAx3IwhACjZbYVBOVX9FORgZVWVFck4DB3RGPhoXUGlGdR4CASNEPh0UVWR0A346Zkb1aH8gVG1EJEgDUX9PuA"
-    }
-    sessionStorage.setItem("userData", JSON.stringify(date));
     userData = JSON.parse(sessionStorage.getItem("userData"));
     if (!userData) {
         console.log("Not logged in");
