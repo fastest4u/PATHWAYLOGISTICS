@@ -70,7 +70,20 @@ async function registerUser(userData) {
     const response = await fetch(apiUrl, requestOptions);
     if (response.ok) {
       displayNotification("ลงทะเบียนสำหรับการใช้งานเรียบร้อย", "success");
+      setTimeout(() => {
+        Swal.close();
+      }, 1000);
+      return ;
+    }else{
+      displayNotification("ลงทะเบียนไม่สำหรับการใช้งาน", "error");
+      setTimeout(() => {
+        Swal.close();
+      }, 1000);
+      return ;
     }
+
+
+
   } catch (error) {
     console.error(error);
   }
