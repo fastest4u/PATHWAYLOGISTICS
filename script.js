@@ -36,7 +36,8 @@ async function main() {
         sessionStorage.setItem("userData", JSON.stringify(userId));
 
       } else {
-        console.log("ยังไม่ได้ลงทะเบียน");
+        let title = `${profile.displayName} ยังไม่ได้ลงทะเบียน \n กรุณาลงทะเบียนก่อนใช้งาน`;
+        displayNotification(title, "warning");
         // Optionally, you can call registerUser(profileData) here if you want to register new users automatically.
       }
 
