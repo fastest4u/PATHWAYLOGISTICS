@@ -1,7 +1,13 @@
 
 
 document.addEventListener("DOMContentLoaded", () => {
+  // data= {
+  //     userId: null,
+  //     pictureUrl: null,
+  //     displayName: null
   
+  // }
+  // sessionStorage.setItem("userData", JSON.stringify(data));
   userData = JSON.parse(sessionStorage.getItem('userData'));
   if (userData) {
     console.log(userData);
