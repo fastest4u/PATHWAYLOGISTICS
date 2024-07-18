@@ -34,6 +34,7 @@ async function main() {
         let status = await signup();
         if (status) {
           await registerUser(profileData);
+          return
           
         }
         let title = `${profile.displayName}  \n ยังไม่ได้ลงทะเบียน \n กรุณาลงทะเบียนก่อนใช้งาน`;
@@ -67,13 +68,13 @@ async function registerUser(userData) {
       setTimeout(() => {
         Swal.close();
       }, 1000);
-      return ;
+
     }else{
       displayNotification("ลงทะเบียนไม่สำหรับการใช้งาน", "error");
       setTimeout(() => {
         Swal.close();
       }, 1000);
-      return ;
+
     }
 
 
