@@ -38,11 +38,13 @@ async function main() {
       } else {
        
         let status = await signup();
-        if (status=="TRUE") {
-          console.log("ลงทะเบียนสําเร็จ");
+        if (status) {
+          await registerUser(profileData);
+          return
         }
         let title = `${profile.displayName}  \n ยังไม่ได้ลงทะเบียน \n กรุณาลงทะเบียนก่อนใช้งาน`;
         displayNotification(title, "warning");
+        return
         
       }
 
@@ -66,7 +68,9 @@ async function registerUser(userData) {
 
   try {
     const response = await fetch(apiUrl, requestOptions);
-    return await response.json();
+    if (response.ok) {
+      displayNotification("ลงทะเบียนสำหรับการใช้งานเรียบร้อย", "success");
+    }
   } catch (error) {
     console.error(error);
   }
@@ -267,7 +271,7 @@ async function signup() {
     }
 
     const res = await response.json();
-    return res[0];
+    return res[0].Signup;
   } catch (error) {
     throw error;
   }
