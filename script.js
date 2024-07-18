@@ -36,9 +36,14 @@ async function main() {
         sessionStorage.setItem("userData", JSON.stringify(userId));
 
       } else {
+       
+        let status = await signup();
+        if (status===true) {
+          console.log("ลงทะเบียนสําเร็จ");
+        }
         let title = `${profile.displayName}  \n ยังไม่ได้ลงทะเบียน \n กรุณาลงทะเบียนก่อนใช้งาน`;
         displayNotification(title, "warning");
-        // Optionally, you can call registerUser(profileData) here if you want to register new users automatically.
+        
       }
 
 
@@ -250,6 +255,25 @@ async function submitForm(obj, event) {
     // Errors are reported there
     console.log('There was a problem with the fetch operation:', error);
   }
+}
+
+async function signup() {
+  const Url = `https://sheet.best/api/sheets/b1628384-d498-4a3e-819f-fb58c139df2a/tabs/Signup`;
+  try {
+    const response = await fetch(Url);
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const res = await response.json();
+    return res[0];
+  } catch (error) {
+    throw error;
+  }
+
+
+
 }
 
 
