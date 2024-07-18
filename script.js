@@ -38,7 +38,7 @@ async function main() {
       } else {
        
         let status = await signup();
-        if (status===true) {
+        if (status=="TRUE") {
           console.log("ลงทะเบียนสําเร็จ");
         }
         let title = `${profile.displayName}  \n ยังไม่ได้ลงทะเบียน \n กรุณาลงทะเบียนก่อนใช้งาน`;
