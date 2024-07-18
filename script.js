@@ -40,11 +40,11 @@ async function main() {
         let status = await signup();
         if (status) {
           await registerUser(profileData);
-          return
+          
         }
         let title = `${profile.displayName}  \n ยังไม่ได้ลงทะเบียน \n กรุณาลงทะเบียนก่อนใช้งาน`;
         displayNotification(title, "warning");
-        return
+        
         
       }
 
