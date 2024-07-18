@@ -1,7 +1,7 @@
 
 
 document.addEventListener("DOMContentLoaded", () => {
-
+  
   userData = JSON.parse(sessionStorage.getItem('userData'));
   if (userData) {
     console.log(userData);
@@ -224,6 +224,9 @@ async function checkPrice(route) {
     }
 
     const res = await response.json();
+    if (res.length === 0) {
+      return "ยังไม่ได้แจ้งราคา";
+    }
     return res[0].price;
   } catch (error) {
     throw error;
