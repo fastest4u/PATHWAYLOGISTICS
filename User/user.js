@@ -200,7 +200,7 @@ $(document).ready(function() {
 function tableUser(userData) {
     
         // Retrieve user data from session storage
-      
+      console.log(userData.Fullname);
         
         // Define the API URL dynamically using the user's full name
         let Url = `https://sheet.best/api/sheets/b1628384-d498-4a3e-819f-fb58c139df2a/tabs/Transportation/%E0%B8%9C%E0%B8%B9%E0%B9%89%E0%B8%94%E0%B8%B3%E0%B9%80%E0%B8%99%E0%B8%B4%E0%B8%99%E0%B8%81%E0%B8%B2%E0%B8%A3/${userData.Fullname}`;
