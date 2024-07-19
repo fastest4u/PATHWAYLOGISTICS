@@ -108,7 +108,7 @@
 
 /* left box */
  .sales-boxes .recent-sales{
-  width: 95%;
+  width: 65%;
   background: #fff;
   padding: 20px 30px;
   margin: 0 20px;
@@ -191,4 +191,47 @@
   font-size: 17px;
   font-weight: 400;
   color: #333;
+}
+#datatable td, #datatable th {
+  font-size: 14px; /* ขนาดตัวอักษร */
+  padding: 4px 8px; /* ระยะห่างในเซลล์ */
+  line-height: 2; /* ความสูงของบรรทัด */
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+
+
+
+@media (max-width: 1150px) {
+ .sales-boxes{
+    flex-direction: column;
+  }
+  .sales-boxes .box{
+    width: 100%;
+    overflow-x: scroll;
+    margin-bottom: 30px;
+  }
+ .sales-boxes .top-sales{
+    margin: 0;
+  }
+}
+@media (max-width: 1000px) {
+  .overview-boxes .box{
+    width: calc(100% / 2 - 15px);
+    margin-bottom: 15px;
+  }
+}
+@media (max-width: 700px) {
+  .sales-boxes .sales-details{
+    width: 560px;
+  }
+}
+@media (max-width: 550px) {
+  .overview-boxes .box{
+    margin-top: 15px;
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
 }

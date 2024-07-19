@@ -28,7 +28,7 @@ async function main() {
       console.log(userId);
       if (userId) {
         sessionStorage.setItem("userData", JSON.stringify(userId));
-        window.location.href = "User/user.html";
+        window.location.href = "/User";
 
       } else {
        
