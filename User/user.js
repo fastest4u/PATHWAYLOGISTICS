@@ -265,7 +265,7 @@ function tableUser(userData) {
 
 
 function withdraw(el) {
-    const token = 'U99nfiyipOMe1mlpu20q2cLjcYs93rlr8Qkkrb95aK5';
+    const token = '6nfftj49FYnm03r3FX35Bf9Ldm3hc7yYvjmr0hwW4NY';
     const tablUser = $('#datatable').DataTable();
     const userData = JSON.parse(sessionStorage.getItem("userData"));
     let Url = `https://sheet.best/api/sheets/b1628384-d498-4a3e-819f-fb58c139df2a/tabs/`;
