@@ -1,7 +1,6 @@
 
 
 
-
 function logOut() {
     liff.logout();
     window.location.reload();
@@ -163,18 +162,6 @@ async function submitForm(obj, event) {
     }
 }
 $(document).ready(function() {
-    // ข้อมูลผู้ใช้
-    // user = {
-    //     "userId": "Ueba4de51638f6d4e11c70448cf1762d1",
-    //     "displayName": "🅑🅐🅝🅖.🅟︎🅣︎🅦︎🅛",
-    //     "Fullname": "bank",
-    //     "rules": "user",
-    //     "department": "1",
-    //     "pictureUrl": "https://profile.line-scdn.net/0hweQrAPbrKEp8Czpy9fhWNQxbKyBfenFYBD4weUkDf35AP2wZUD03JE4NJS9AaToaUz0wfkEDdHxwGF8sYl3Ufns7dXtAP2kVVWRurg"
-    // };
-
-    // // เซ็ตข้อมูลผู้ใช้ใน sessionStorage
-    // sessionStorage.setItem("userData", JSON.stringify(user));
     userData = JSON.parse(sessionStorage.getItem("userData"));
     if (userData) {
         $('#userImage').attr('src', userData.pictureUrl);
@@ -203,7 +190,7 @@ function tableUser(userData) {
       console.log(userData.Fullname);
         
         // Define the API URL dynamically using the user's full name
-        let Url = `https://sheet.best/api/sheets/b1628384-d498-4a3e-819f-fb58c139df2a/tabs/Transportation/%E0%B8%9C%E0%B8%B9%E0%B9%89%E0%B8%94%E0%B8%B3%E0%B9%80%E0%B8%99%E0%B8%B4%E0%B8%99%E0%B8%81%E0%B8%B2%E0%B8%A3/${userData.Fullname}`;
+        let Url = `https://sheet.best/api/sheets/b1628384-d498-4a3e-819f-fb58c139df2a/tabs/Transportation/search?%E0%B8%9C%E0%B8%B9%E0%B9%89%E0%B8%94%E0%B8%B3%E0%B9%80%E0%B8%99%E0%B8%B4%E0%B8%99%E0%B8%81%E0%B8%B2%E0%B8%A3=${userData.Fullname}&payment=FALSE`;
         
         // Initialize the DataTable
         $('#datatable').DataTable({
@@ -219,6 +206,7 @@ function tableUser(userData) {
                 }
             },
             "columns": [
+                { "data": "ลำดับ" },
                 { "data": "วันที่" },
                 { "data": "เส่นทาง" },
                 { "data": "บาร์โค้ด" },
@@ -230,8 +218,9 @@ function tableUser(userData) {
                 { "data": "สถานะ" }
             ],
             "columnDefs": [
+                { visible: false, targets: 0 },
                 {
-                    targets: 8, // Targets the seventh column (Action)
+                    targets: 9, // Targets the seventh column (Action)
                     render: data => {
                       if (data == 'อนุมัติ'){
                         
@@ -267,7 +256,145 @@ function tableUser(userData) {
             "lengthMenu": [10, 25, 50, 100],
             "pageLength": 10,
             "searching": true,
-            "ordering": true
+            "ordering": true,
+            order:[[0,'desc']],
+            "info": true,
         });
     
 }
+
+
+function withdraw(el) {
+    const token = 'U99nfiyipOMe1mlpu20q2cLjcYs93rlr8Qkkrb95aK5';
+    const tablUser = $('#datatable').DataTable();
+    const userData = JSON.parse(sessionStorage.getItem("userData"));
+    let Url = `https://sheet.best/api/sheets/b1628384-d498-4a3e-819f-fb58c139df2a/tabs/`;
+    let rowData = tablUser.row(el.parentNode.parentNode).data();
+    let cleanedValue = rowData.ราคา.replace(/[^\d.-]/g, '');
+    let formData = {
+        วันที่เบิก: date(),
+        ผู้ขอเบิก: rowData.ผู้ดำเนินการ,
+        สถานะ: "รออนุมัติ",
+        บาร์โค้ด: rowData.บาร์โค้ด,
+        เส้นทาง: rowData.เส่นทาง,
+        จำนวนเงิน: parseInt(cleanedValue / 2),
+    };
+    const myHeaders = new Headers({
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+    });
+    const requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow"
+    };
+    console.log(formData);
+    Swal.fire({
+        title: `<h4>ยืนยันที่จะเบิกน้ำมัน</h4> <span style="font-size: 1rem;">จำนวน ${formData.จำนวนเงิน} บาท</span>`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#198754',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'ยกเลิก',
+        confirmButtonText: 'ตกลง',
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+            return fetch(Url + 'Log', {
+                method: 'POST',
+                headers: myHeaders,
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
+                return response.json();
+            })
+            .catch(error => {
+                Swal.showValidationMessage(
+                    `Request failed: ${error}`
+                );
+            });
+        }
+    })
+    .then(result => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                icon: 'success',
+                title: 'เบิกน้ำมันสำหรับเรียบร้อย',
+                showConfirmButton: false,
+                timer: 1000
+            });
+            fetch(Url + 'ui/userId/' + userData.userId, requestOptions)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                let message = `\nลงทะเบียนเบิกน้ำมัน\n`;
+                for (let key in data[0]) {
+                    message += `${key} : ${data[0][key]}\n`;
+                }
+                message+= `จำนวนเงิน : ${formData.จำนวนเงิน} บาท`;
+                line(message, token)
+                return             
+               
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: `Request failed: ${error}`,
+                });
+            });
+        }
+    });
+}
+
+  function date(){
+    let date = new Date();
+  let options = {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  }
+  return date.toLocaleString('th-TH', options);
+  
+  }
+  async function line(message, lineToken) {
+    const url = `https://fleet-vip.vercel.app/line?message=${encodeURIComponent(message)}&lineToken=${encodeURIComponent(lineToken)}`;
+  
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "multipart/form-data");
+  
+    const requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow"
+    };
+  
+    try {
+      const response = await fetch(url, requestOptions);
+      const result = await response.text();
+      console.log(result);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+  
+  // ตัวอย่างการใช้งานฟังก์ชัน
+
+  
+  
+  // วิธีการใช้งานฟังก์ชัน
+
+  
+
+  
+  

@@ -79,7 +79,7 @@ async function registerUser(userData) {
     }
 
 
-
+    return 
   } catch (error) {
     console.error(error);
   }
@@ -140,13 +140,6 @@ async function signup() {
 
 
 }
-
-
-
-
-
-
-
 
 
 
